@@ -154,7 +154,7 @@ int main(int argc, char **argv){
         perror("Datagram reading error\n");
         exit(-1);
       }      
-        printf("server response: %s, exit(0)\n", srv_response);
+        printf("Get server response: %s\n", srv_response);
         exit(0);
     }  
   }         

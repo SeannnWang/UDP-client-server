@@ -6,19 +6,36 @@
 #include<sys/errno.h>
 #include<arpa/inet.h>
 #include<netinet/in.h>
-
-#define SRV_PORT 16384
 #define MAXLEN 1024
 
-int main(){
+int main(int argc, char** argv){
   int socketfd;
   socklen_t addr_length;
   int nbytes; 
   struct sockaddr_in srv_addr;
   struct sockaddr_in client_addr;
+  int srv_port;
   char buff[BUFSIZ];
   
-  /*Get socket descriptor*/
+  /*
+   *Check argument
+   */
+  if(argc<1){
+    printf("invalid client side usage\nServer should have an argument <server port>\n");
+    exit(-1);
+  }    
+  
+  //handle port from user input
+  srv_port = atoi(argv[1]);
+  if(srv_port==0){
+    printf("Server port is not in valid format\n");
+    printf("client format is <server ip address> <server port> <max num of retry> <message>\n");
+    exit(-1);
+  }
+  
+  /*
+   *Get socket descriptor
+   */
   socketfd = socket(AF_INET, SOCK_DGRAM, 0);
   if(socketfd<0){
     perror("Socket creation failed");
@@ -26,20 +43,26 @@ int main(){
   }
   printf("Socket is successfully created\n");
 
-  /*set up server address*/
+  /*
+   *set up server address
+   */
   memset(&srv_addr, 0, sizeof(srv_addr));
   srv_addr.sin_family = AF_INET;
   srv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-  srv_addr.sin_port = htons(SRV_PORT);
+  srv_addr.sin_port = htons(srv_port);
 
-  /*bind service address with socket descriptor*/
+  /*
+   *bind service address with socket descriptor
+   */
   if(bind(socketfd, (struct sockaddr *)&srv_addr, sizeof(srv_addr)) < 0){
     perror("bind failure");
     exit(-1);
   }
-  printf("Bind Successed\nserver start listening...\n");
+  printf("Bind Successed\nserver start listening on port %d...\n", srv_port);
 
-  /*listen to client*/
+  /*
+   *listen to client
+   */
   addr_length = sizeof(client_addr);
   while(true){
     
