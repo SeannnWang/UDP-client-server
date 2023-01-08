@@ -29,7 +29,7 @@ int main(int argc, char** argv){
   srv_port = atoi(argv[1]);
   if(srv_port==0){
     printf("Server port is not in valid format\n");
-    printf("client format is <server ip address> <server port> <max num of retry> <message>\n");
+    printf("Server has an argument <server port> \n");
     exit(-1);
   }
   
