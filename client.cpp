@@ -83,8 +83,8 @@ int main(int argc, char **argv){
   
   memset(&srv_addr, 0, sizeof(srv_addr));
   srv_addr.sin_family = AF_INET;
-  client_addr.sin_addr.s_addr = host_ip;
-  srv_addr.sin_port = htons(SRV_PORT);
+  srv_addr.sin_addr.s_addr = host_ip;
+  srv_addr.sin_port = htons(srv_port);
   
   /*read input from file*/
   input_fd = open(argv[3], O_RDONLY);
