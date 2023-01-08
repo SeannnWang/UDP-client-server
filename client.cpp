@@ -109,12 +109,7 @@ int main(int argc, char **argv){
   int retry_num = 0; 
   struct timeval timeout;
   timeout.tv_sec = RETRYBASE*pow(MULTIPLIER,retry_num);
-  timeout.tv_usec = 0;
-  
-  //set time out check descriptor
-  FD_ZERO(&timeout_read_fds);
-  FD_SET(socketfd, &timeout_read_fds);
-
+  timeout.tv_usec = 0;    
 
   /*
    *send message to server
@@ -126,12 +121,15 @@ int main(int argc, char **argv){
       perror("Datagram sending error\n");
       exit(-1);
     }
+    
+    //set time out check descriptor
+    FD_ZERO(&timeout_read_fds);
+    FD_SET(socketfd, &timeout_read_fds);
  
     /*
      *receive message from server
      */  
-    ret = select(socketfd+1, &timeout_read_fds, NULL, NULL, &timeout);
-
+    ret = select(socketfd+1, &timeout_read_fds, NULL, NULL, &timeout);    
     if(ret<0){
       perror("select failed");
       exit(-1);
