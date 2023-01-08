@@ -5,6 +5,8 @@ udp client/server demo
 1.Exponential back off from client side  
 2.create argument to config server ip ,port and max retry number
 
+#All Functions are now in main branch!!!  
+
 ***Compile server & client by directly make in terminal which would generate executable file  
   (1)server-> server.out  
   (2)client->client.out  
