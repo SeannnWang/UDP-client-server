@@ -57,6 +57,6 @@ int main(){
       perror("Datagram sending error\n");
       continue;
     }
-    printf("Return message to client finished, server listening...\n");
+    printf("Return message to client finished, server listening...\n\n");
   } 
 }

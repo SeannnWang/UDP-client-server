@@ -42,7 +42,7 @@ int main(int argc, char **argv){
     
   /*Check input parameter*/
   if(argc<3){
-    printf("invalid client side usage, check client format and retry\n");
+    printf("invalid client side usage\nclient format is <server ip address> <server port> <max num of retry>\n");
     exit(-1);
   }
 
@@ -71,6 +71,7 @@ int main(int argc, char **argv){
   host_ip = inet_addr(argv[1]);
   if(host_ip == INADDR_NONE){
     printf("cannot read server address from %s\n", argv[1]);
+    printf("client format is <server ip address> <server port> <max num of retry> <message>\n");
     exit(-1);
   } 
   
@@ -78,26 +79,14 @@ int main(int argc, char **argv){
   srv_port = atoi(argv[2]);
   if(srv_port==0){
     printf("Server port is not in valid format\n");
+    printf("client format is <server ip address> <server port> <max num of retry> <message>\n");
     exit(-1);
   }
   
   memset(&srv_addr, 0, sizeof(srv_addr));
   srv_addr.sin_family = AF_INET;
   srv_addr.sin_addr.s_addr = host_ip;
-  srv_addr.sin_port = htons(srv_port);
-  
-  /*read input from argument*/  
-  printf("strlen(argv[3])+1 size: %ld\n", strlen(argv[4])+1);
-  memcpy(read_data, argv[4], strlen(argv[4])+1);
-  /*nbyte = read(input_fd, read_data, MAXLEN);
-  if(nbyte<0){
-    printf("file read falied\n");
-    exit(-1);
-  }
-  if(nbyte>MAXLEN){
-    printf("Message exceed max length\n");   
-    exit(-1);
-  }    */
+  srv_addr.sin_port = htons(srv_port);    
 
   /*
    * Set up Time out handler
@@ -111,8 +100,12 @@ int main(int argc, char **argv){
    *send message to server
    */
   addr_length = sizeof(srv_addr);
-
-  while(true){
+  printf("Enter message: ");
+  char chat[MAXLEN];
+  scanf("%1023s", chat); 
+  
+  while(true){    
+    memcpy(read_data, chat, strlen(chat)+1);       
     if(sendto(socketfd, read_data, sizeof(read_data), 0, (struct sockaddr*)&srv_addr, addr_length)<0){
       perror("Datagram sending error\n");
       exit(-1);
