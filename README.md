@@ -1,7 +1,7 @@
 # UDP-client-server
 udp client/server demo
 
-#1/7/2023 Set all basic require functions!  
+#1/7/2023 Set all basic require functions and merge to main   
 1.Exponential back off from client side  
 2.create argument to config server ip ,port and max retry number
 
