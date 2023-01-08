@@ -9,5 +9,6 @@ udp client/server demo
   (1)server-> server.out  
   (2)client->client.out 
 ***execute server.out directly  
-***execute client.out by the following format ./client.out <server ip address> <server port> <number of max retry>  
+***execute client.out by the following format  
+   ./client.out <server ip address> <server port> <number of max retry>  
    where the file contains message, which contains maximum 1024 bytes,sending to server 
