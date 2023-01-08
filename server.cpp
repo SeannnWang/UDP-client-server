@@ -6,6 +6,7 @@
 #include<sys/errno.h>
 #include<arpa/inet.h>
 #include<netinet/in.h>
+#include<unistd.h>
 #define MAXLEN 1024
 
 int main(int argc, char** argv){
@@ -16,6 +17,7 @@ int main(int argc, char** argv){
   struct sockaddr_in client_addr;
   int srv_port;
   char buff[BUFSIZ];
+  pid_t pid;
   
   /*
    *Check argument
@@ -71,15 +73,23 @@ int main(int argc, char** argv){
     if(nbytes <0){
       perror("Datagram reading error\n");
       continue; 
-    }      
-    printf("Received %d bytes from ip address: %s and port %d\n", nbytes, inet_ntoa(client_addr.sin_addr), htons(client_addr.sin_port));
-    printf("Data:%s\n", buff);
+    }          
 
-    /*return to client*/
-    if(sendto(socketfd, &buff, nbytes, 0, (struct sockaddr*)&client_addr, addr_length)<0){
-      perror("Datagram sending error\n");
-      continue;
-    }
-    printf("Return message to client finished, server listening...\n\n");
-  } 
+    pid = fork();
+    
+    //return client by child process
+    if(pid == 0){
+      printf("Received %d bytes from ip address: %s and port %d\n", nbytes, inet_ntoa(client_addr.sin_addr), htons(client_addr.sin_port));
+      printf("Data:%s\n", buff);
+      /*return to client*/
+      if(sendto(socketfd, &buff, nbytes, 0, (struct sockaddr*)&client_addr, addr_length)<0){
+        perror("Datagram sending error\n");        
+      }
+      else{
+        printf("Return message to client finished, server listening...\n\n");       
+      }      
+      return 0;    
+    }    
+  }
+  return 0; 
 }
