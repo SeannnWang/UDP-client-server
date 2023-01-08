@@ -27,13 +27,17 @@ int main(int argc, char **argv){
   int nbyte;
   char read_data[MAXLEN+1];
   char srv_response[MAXLEN+1];
+  //server ip and port related vars
   in_addr_t host_ip;
+  int srv_port;
   struct sockaddr_in client_addr;
   struct sockaddr_in srv_addr;
-  /*variables which handle time out*/
+  
+  //variables which handle time out
   fd_set timeout_read_fds;
   int ret;
-  /*Max retry*/
+  
+  //Max retry
   int max_retry = 3;
     
   /*Check input parameter*/
@@ -70,13 +74,20 @@ int main(int argc, char **argv){
     exit(-1);
   } 
   
+  /*handle port from user input*/
+  srv_port = atoi(argv[2]);
+  if(srv_port==0){
+    printf("Server port is not in valid format\n");
+    exit(-1);
+  }
+  
   memset(&srv_addr, 0, sizeof(srv_addr));
   srv_addr.sin_family = AF_INET;
   client_addr.sin_addr.s_addr = host_ip;
   srv_addr.sin_port = htons(SRV_PORT);
   
   /*read input from file*/
-  input_fd = open(argv[2], O_RDONLY);
+  input_fd = open(argv[3], O_RDONLY);
   if(input_fd==-1){
     printf("file open failed\n");
     exit(-1);
@@ -131,7 +142,7 @@ int main(int argc, char **argv){
       printf("Timeout in %.3f sec, ", interval); 
       
       if(++retry_num > max_retry){
-        printf("exceed max retry:%d, exit program with code '1'", max_retry);
+        printf("exceed max retry:%d, exit program with code(1)\n", max_retry);
         exit(1);
       }
       if(interval > MAXINTERVAL){
@@ -144,7 +155,7 @@ int main(int argc, char **argv){
     }   
     else{
       //data is available on socket
-      if(recvfrom(socketfd, srv_response, MAXLEN, 0, (struct sockaddr*)&srv_addr,&addr_length)<0){
+      if(recvfrom(socketfd, srv_response, MAXLEN, 0, (struct sockaddr*)&srv_addr, &addr_length)<0){
         perror("Datagram reading error\n");
         exit(-1);
       }      
