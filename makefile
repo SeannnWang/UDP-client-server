@@ -1,5 +1,5 @@
 all:
-	g++ server.cpp -o server.out
-	g++ client.cpp -o client.out
+	gcc -Wall server.c -o server.out -lm
+	gcc -Wall client.c -o client.out -lm
 clean:
 	rm -f *.out

@@ -66,7 +66,7 @@ int main(int argc, char** argv){
    *listen to client
    */
   addr_length = sizeof(client_addr);
-  while(true){
+  while(1){
     
     /*receiving client*/
     nbytes = recvfrom(socketfd, &buff, MAXLEN, 0, (struct sockaddr*)&client_addr, &addr_length);

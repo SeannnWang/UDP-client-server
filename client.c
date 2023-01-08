@@ -20,11 +20,8 @@
 #define MAXINTERVAL 8
 
 int main(int argc, char **argv){
-  int socketfd;
-  int msg_length;
-  socklen_t addr_length;
-  int input_fd;
-  int nbyte;
+  int socketfd;  
+  socklen_t addr_length;  
   char read_data[MAXLEN+1];
   char srv_response[MAXLEN+1];
   //server ip and port related vars
@@ -110,7 +107,7 @@ int main(int argc, char **argv){
   char chat[MAXLEN];
   fgets(chat, 1024, stdin); 
   
-  while(true){    
+  while(1){    
     memcpy(read_data, chat, strlen(chat)+1);       
     if(sendto(socketfd, read_data, sizeof(read_data), 0, (struct sockaddr*)&srv_addr, addr_length)<0){
       perror("Datagram sending error\n");
