@@ -40,20 +40,26 @@ int main(int argc, char **argv){
   //Max retry
   int max_retry = atoi(argv[3]);
     
-  /*Check input parameter*/
+  /*
+   *Check input format
+   */
   if(argc<3){
     printf("invalid client side usage\nclient format is <server ip address> <server port> <max num of retry>\n");
     exit(-1);
   }
 
-  /*create socket*/
+  /*
+   *create socket
+   */
   socketfd = socket(AF_INET, SOCK_DGRAM, 0);
   if(socketfd<0){
     perror("socket creation failed\n");
     exit(-1);
   }
   
-  /*Bind client address with socket descriptor*/
+  /*
+   *Bind client address with socket descriptor
+   */
   memset(&client_addr, 0, sizeof(client_addr));
   client_addr.sin_family = AF_INET;
   client_addr.sin_addr.s_addr = (INADDR_ANY);
@@ -67,7 +73,7 @@ int main(int argc, char **argv){
   /*
    *Bind server IP address
    */  
-  /*handle ip address from user input*/
+  //handle ip address from user input
   host_ip = inet_addr(argv[1]);
   if(host_ip == INADDR_NONE){
     printf("cannot read server address from %s\n", argv[1]);
@@ -75,7 +81,7 @@ int main(int argc, char **argv){
     exit(-1);
   } 
   
-  /*handle port from user input*/
+  //handle port from user input
   srv_port = atoi(argv[2]);
   if(srv_port==0){
     printf("Server port is not in valid format\n");
@@ -111,7 +117,9 @@ int main(int argc, char **argv){
       exit(-1);
     }
     
-    //set time out check descriptor
+    /*
+     *set time out check descriptor
+     */
     FD_ZERO(&timeout_read_fds);
     FD_SET(socketfd, &timeout_read_fds);
  
@@ -146,7 +154,7 @@ int main(int argc, char **argv){
         perror("Datagram reading error\n");
         exit(-1);
       }      
-        printf("server response: %s\n", srv_response);
+        printf("server response: %s, exit(0)\n", srv_response);
         exit(0);
     }  
   }         
