@@ -102,7 +102,7 @@ int main(int argc, char **argv){
   addr_length = sizeof(srv_addr);
   printf("Enter message: ");
   char chat[MAXLEN];
-  scanf("%1023s", chat); 
+  fgets(chat, 1024, stdin); 
   
   while(true){    
     memcpy(read_data, chat, strlen(chat)+1);       
