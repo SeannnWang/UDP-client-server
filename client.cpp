@@ -132,16 +132,15 @@ int main(int argc, char **argv){
       exit(-1);
     }
     else if(ret==0){
-      //timeout occurred, implement exponential backoff
-      double interval = RETRYBASE*pow(MULTIPLIER,retry_num);      
-      printf("Timeout in %.3f sec, ", interval); 
+      //timeout occurred, implement exponential backoff      
+      printf("Timeout in %.3f sec, ", RETRYBASE*pow(MULTIPLIER,retry_num)); 
       
       if(++retry_num > max_retry){
         printf("exceed max retry:%d, exit program with code(1)\n", max_retry);
         exit(1);
       }
-      if(interval > MAXINTERVAL){
-        printf("\nExceed MAXINTERVAL:%d, exit program with code(1)\n", MAXINTERVAL);
+      if(RETRYBASE*pow(MULTIPLIER,retry_num) > MAXINTERVAL){
+        printf("\nExceed MAX WAIT INTERVAL:%d, exit program with code(1)\n", MAXINTERVAL);
         exit(1);
       }
       printf("trigger retry mechanism\n\nRetry: %d times:\n", retry_num);         
