@@ -38,7 +38,7 @@ int main(int argc, char **argv){
   int ret;
   
   //Max retry
-  int max_retry = 3;
+  int max_retry = atoi(argv[3]);
     
   /*Check input parameter*/
   if(argc<3){
@@ -86,14 +86,10 @@ int main(int argc, char **argv){
   srv_addr.sin_addr.s_addr = host_ip;
   srv_addr.sin_port = htons(srv_port);
   
-  /*read input from file*/
-  input_fd = open(argv[3], O_RDONLY);
-  if(input_fd==-1){
-    printf("file open failed\n");
-    exit(-1);
-  }
-
-  nbyte = read(input_fd, read_data, MAXLEN);
+  /*read input from argument*/  
+  printf("strlen(argv[3])+1 size: %ld\n", strlen(argv[4])+1);
+  memcpy(read_data, argv[4], strlen(argv[4])+1);
+  /*nbyte = read(input_fd, read_data, MAXLEN);
   if(nbyte<0){
     printf("file read falied\n");
     exit(-1);
@@ -101,7 +97,7 @@ int main(int argc, char **argv){
   if(nbyte>MAXLEN){
     printf("Message exceed max length\n");   
     exit(-1);
-  }    
+  }    */
 
   /*
    * Set up Time out handler
@@ -117,7 +113,7 @@ int main(int argc, char **argv){
   addr_length = sizeof(srv_addr);
 
   while(true){
-    if(sendto(socketfd, read_data, nbyte, 0, (struct sockaddr*)&srv_addr, addr_length)<0){
+    if(sendto(socketfd, read_data, sizeof(read_data), 0, (struct sockaddr*)&srv_addr, addr_length)<0){
       perror("Datagram sending error\n");
       exit(-1);
     }
@@ -157,7 +153,7 @@ int main(int argc, char **argv){
         perror("Datagram reading error\n");
         exit(-1);
       }      
-        printf("server response: %s", srv_response);
+        printf("server response: %s\n", srv_response);
         exit(0);
     }  
   }         
