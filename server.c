@@ -79,7 +79,7 @@ int main(int argc, char** argv){
     
     //return client by child process
     if(pid == 0){
-      printf("Received %d bytes from ip address: %s and port %d\n", nbytes, inet_ntoa(client_addr.sin_addr), htons(client_addr.sin_port));
+      printf("Received data from ip address: %s and port %d\n", inet_ntoa(client_addr.sin_addr), htons(client_addr.sin_port));
       printf("Data:%s\n", buff);
       
       /*return to client*/
